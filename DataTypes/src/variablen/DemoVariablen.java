@@ -48,6 +48,11 @@ public class DemoVariablen {
         int hex = 0x6E;           // '0x' prefix --> hexadecimal literal
         
         System.out.println(dec+" "+bin+" "+oct+" "+hex);
+        
+        //single char
+        char c1 = 'a';
+        char c2 = 'b';
+        System.out.println((int) c1+" "+c2);
 	}
 	
 }
