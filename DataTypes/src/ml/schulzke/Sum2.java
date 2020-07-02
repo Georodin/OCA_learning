@@ -1,10 +1,10 @@
-package aufgaben1;
+package ml.schulzke;
 
-public class Sum1 {
+public class Sum2 {
 	public static void main(String[] args) {
 	// Deklaration der Variablen
 	// Ganze Zahl, bis zu der summiert wird
-	int[] boundary = {0,1,2,3,4,5,10};
+	int[] boundary = {100,200};
 	// Summe der bisher addierten ganzen Zahlen
 	int sum;
 	// Ganze Zahl, die jeweils an der Reihe ist
@@ -15,13 +15,13 @@ public class Sum1 {
 	for (int i = 0;i<boundary.length;i++) {
 		// Festlegen der Startwerte der Variablen
 		sum = 0;
-		counter = 1;
+		counter = 0;
 	// Berechnen der Summe sum über alle Zahlen von 1 bis boundary
 		while (counter <= boundary[i]) {
 			sum = sum + counter;
-			counter = counter + 1;
+			counter = counter + 2;
 		}
-		System.out.print("Die Summe der Zahlen von 1 bis ");
+		System.out.print("Die Summe der geraden Zahlen von 1 bis ");
 		System.out.print(boundary[i]);
 		System.out.print(" ist ");
 		System.out.println(sum);
@@ -31,3 +31,4 @@ public class Sum1 {
 
 	}
 }
+

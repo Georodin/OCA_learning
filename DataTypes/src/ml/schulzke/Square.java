@@ -1,4 +1,4 @@
-package aufgaben1;
+package ml.schulzke;
 
 public class Square {
 	public static void main(String[] args) {

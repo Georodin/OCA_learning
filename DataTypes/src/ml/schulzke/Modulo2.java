@@ -1,4 +1,4 @@
-package aufgaben1;
+package ml.schulzke;
 
 import java.io.*;
 
