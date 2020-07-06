@@ -22,21 +22,23 @@ public class BMI {
 		}
 		float kg = Float.parseFloat(str_kg);
 		
-		isr = new InputStreamReader(System.in);
+		InputStreamReader isr2 = new InputStreamReader(System.in);
+		BufferedReader br2 = new BufferedReader(isr);
 		System.out.println("Wie alt sind Sie(Jahre):");
-		String str_age = br.readLine();
-		while (isNumeric(str_kg)==false) {
+		String str_age = br2.readLine();
+		while (isNumeric(str_age)==false) {
 			System.out.println("Nur Zahlen sind erlaubt! Kommerzahlen bitte mit \".\" trennen. Bitte erneut eingeben: ");
-			str_age = br.readLine();
+			str_age = br2.readLine();
 		}
 		float age = Float.parseFloat(str_age);
 		
-		isr = new InputStreamReader(System.in);
+		InputStreamReader isr3 = new InputStreamReader(System.in);
+		BufferedReader br3 = new BufferedReader(isr);
 		System.out.println("Wie groﬂ sind Sie in Centimeter:");
-		String str_cm = br.readLine();
+		String str_cm = br3.readLine();
 		while (isNumeric(str_cm)==false) {
 			System.out.println("Nur Zahlen sind erlaubt! Kommerzahlen bitte mit \".\" trennen. Bitte erneut eingeben: ");
-			str_cm = br.readLine();
+			str_cm = br3.readLine();
 		}
 		float cm = Float.parseFloat(str_cm);
 		float bmi = kg/((cm/100)*(cm/100));
