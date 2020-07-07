@@ -47,8 +47,6 @@ public class Password {
 				    if (String.valueOf(ch).matches("[^a-zA-Z0-9]")) {
 				    	special = true;
 				    }
-				    
-				    
 				}
 				
 				//System.out.println(upper+" "+lower+" "+length+" "+number+" "+special);
