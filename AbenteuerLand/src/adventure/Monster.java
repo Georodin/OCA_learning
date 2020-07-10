@@ -2,8 +2,8 @@ package adventure;
 
 public class Monster {
 	private String name = "name";
-	private int health = 0;
-	private int strength = 0;
+	private Float health = 200f;
+	private int strength = 15;
 	
 	public String getName(){
 		return this.name;
@@ -13,11 +13,11 @@ public class Monster {
 		this.name = name;
 	}
 	
-	public int getHealth(){
+	public Float getHealth(){
 		return this.health;
 	}
 	
-	public void setHealth(int health){
+	public void setHealth(Float health){
 		this.health = health;
 	}
 	

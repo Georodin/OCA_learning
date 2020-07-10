@@ -4,8 +4,8 @@ public class Adventurer {
 	
 	private String name = "name";
 	private int age = 0;
-	private int health = 0;
-	private int strength = 0;
+	private Float health = 100f;
+	private int strength = 10;
 	//private Inventory = new Inventory; > Gold > Weapons > Clothing > Potions
 	
 	public String getName(){
@@ -24,11 +24,11 @@ public class Adventurer {
 		this.age = age;
 	}
 	
-	public int getHealth(){
+	public Float getHealth(){
 		return this.health;
 	}
 	
-	public void setHealth(int health){
+	public void setHealth(Float health){
 		this.health = health;
 	}
 	
