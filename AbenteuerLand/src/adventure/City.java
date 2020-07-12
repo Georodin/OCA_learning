@@ -7,9 +7,16 @@ public class City {
     	noOfCitys += 1; 
     } 
 	
-	private String name = "Stadt";
+	private String name = "Memphis";
 	private int posX = 15;
 	private int posY = 15;
+	
+	
+	public void setData(String namein,int x,int y){
+		   name = namein;
+		   posX = x;
+		   posY = y;
+	}
 	
 	public String getName(){
 		return this.name;
@@ -36,7 +43,8 @@ public class City {
 	}
 	
 	
-	public String distance(Adventurer hero) {
-		return ""+Math.sqrt(((this.posX-hero.getX())*(this.posX-hero.getX()))+((this.posY-hero.getY())*(this.posY-hero.getY())));
+	public float distance(Adventurer hero) {
+		return (float) Math.sqrt(((this.posX-hero.getX())*(this.posX-hero.getX()))+((this.posY-hero.getY())*(this.posY-hero.getY())));
 	}
+
 }
