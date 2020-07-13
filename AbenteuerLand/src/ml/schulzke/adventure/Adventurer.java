@@ -115,5 +115,51 @@ public class Adventurer {
 		this.inv.setPotion(potion);
 	}
 	
+public void fight(Monster monster) {
+
+		
+		Random rnd_dmg = new Random();
+		Float dmg = (float) rnd_dmg.nextInt(4)/10;
+		int dmg_end;
+				
+		Random rnd_minus = new Random();
+		
+		if(rnd_minus.nextInt(2)==0) {
+			dmg_end = (int) (this.getStrength()*(1+dmg));
+			
+		}else {
+			dmg_end = (int) (this.getStrength()*(1-dmg));
+		}
+		
+		System.out.println("Du gibst dem "+monster.getName()+" einen Hieb: "+dmg_end+" Schaden!");
+		if((monster.getHealth()-dmg_end)>0) {
+			monster.setHealth(monster.getHealth()-dmg_end);
+			//monster attacks back
+			rnd_dmg = new Random();
+			dmg = (float) rnd_dmg.nextInt(4)/10;
+					
+			rnd_minus = new Random();
+			
+			if(rnd_minus.nextInt(2)==0) {
+				dmg_end = (int) (monster.getStrength()*(1+dmg));
+				
+			}else {
+				dmg_end = (int) (monster.getStrength()*(1-dmg));
+			}
+			
+			this.setHealth(this.getHealth()-dmg_end);
+			
+			System.out.println("Der "+monster.getName()+" tritt dich: "+dmg_end+" Schaden!");
+			System.out.println("Der "+monster.getName()+" hat "+monster.getHealth()+" Lebenspunte uebrig!");
+			System.out.println("Du hast "+this.getHealth()+" Lebenspunte uebrig!");
+			
+		}else{
+			System.out.println("Du hast den "+monster.getName()+" besiegt!");
+			System.out.println("Du erhaelst "+monster.getGold()+" Gold von dem besiegten "+monster.getName()+".");
+			this.setGold(this.getGold()+monster.getGold());
+		}
+		
+	}
+	
 	
 }
