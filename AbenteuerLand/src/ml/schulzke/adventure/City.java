@@ -1,4 +1,4 @@
-package adventure;
+package ml.schulzke.adventure;
 
 public class City {
 	
@@ -7,7 +7,7 @@ public class City {
     	noOfCitys += 1; 
     } 
 	
-	private String name = "Memphis";
+	private String name = "Men-nefer";
 	private int posX = 15;
 	private int posY = 15;
 	

@@ -1,4 +1,4 @@
-package adventure;
+package ml.schulzke.adventure;
 
 public class Monster {
 	private String name = "Troll";

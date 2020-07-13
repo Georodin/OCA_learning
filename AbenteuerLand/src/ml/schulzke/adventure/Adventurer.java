@@ -1,4 +1,6 @@
-package adventure;
+package ml.schulzke.adventure;
+
+import java.util.Random;
 
 public class Adventurer {
 	
@@ -6,11 +8,21 @@ public class Adventurer {
 	private int age = 0;
 	private int level = 1;
 	private Float health = 100f;
+	private Float distanceToTravel = -1f;
+	private boolean ownFlat = false;
 	
 	private int strength = 10;
 	private Inventory inv = new Inventory(); // Gold > Weapons > Clothing > Potions
 	private double x = 0;
 	private double y = 0;
+	
+	public boolean isOwnFlat(){
+	    return ownFlat;
+	}
+
+	public void setOwnFlat(final boolean ownFlat){
+	    this.ownFlat = ownFlat;
+	}
 	
 	public String getInv(){
 		return "Du besitzt:\n"+this.inv.getGold()+" Gold\n"+this.inv.getPotion()+" Heiltraenke\n";
@@ -71,6 +83,14 @@ public class Adventurer {
 		this.health = health;
 	}
 	
+	public Float getDistanceToTravel(){
+		return this.distanceToTravel;
+	}
+	
+	public void setDistanceToTravel(Float distanceToTravel){
+		this.distanceToTravel = distanceToTravel;
+	}
+	
 	public int getStrength(){
 		return this.strength;
 	}
@@ -86,4 +106,14 @@ public class Adventurer {
 	public void setGold(int gold){
 		this.inv.setGold(gold);
 	}
+	
+	public int getPotion(){
+		return this.inv.getPotion();
+	}
+	
+	public void setPotion(int potion){
+		this.inv.setPotion(potion);
+	}
+	
+	
 }

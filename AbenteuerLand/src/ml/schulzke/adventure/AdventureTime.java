@@ -1,4 +1,4 @@
-package adventure;
+package ml.schulzke.adventure;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.util.Random;
 public class AdventureTime {
 	
 	static boolean journey = true;
+	static boolean journeyCon = false;
 	static boolean fight = false;
 	static boolean rest = true;
 	static boolean trade = false;
@@ -16,14 +17,17 @@ public class AdventureTime {
 	static boolean flee = false;
 	static boolean showInventory = true;
 	static boolean foundMonster = false;
-	static Float trvl_distance = 0f;
+	static Float trvl_distance = -1f;
 	static int locationType = 0;
+	static House house = new House();
+	static World world = new World();
 
 	public static void main(String[] args) throws IOException {
-		World world = new World();
+		
 		Adventurer hero = new Adventurer();
 		Monster monster = new Monster();
 		City city = new City();
+		Trader trader = new Trader();
 
 		System.out.println("Es ist der 5. Tag des Achet II im Lande Kemet!");
 		System.out.println("Sei auf der Hut Abenteurer, gefährliche Kreaturen lauern in diesen Gefilden.\n");
@@ -48,12 +52,12 @@ public class AdventureTime {
 		System.out.println(City.noOfCitys); 
 		
 		*/
-		Action(hero,monster,city);
+		Action(hero,monster,city,trader);
 
 		
 	}
 	
-	public static void Action(Adventurer hero,Monster monster,City city) throws IOException {
+	public static void Action(Adventurer hero,Monster monster,City city,Trader trader) throws IOException {
 		
 		while (next==false) {
 			
@@ -63,6 +67,10 @@ public class AdventureTime {
 			System.out.println("Du bist in der Wildniss! Was möchtest du machen?");
 		}else if(locationType==1) {
 			System.out.println("Du bist in einem Kampf mit einem "+monster.getName());
+		}else if(locationType==2) {
+			System.out.println("Du bist in der Wildniss! Moechtest du die Reise fortsetzen?");
+		}else if(locationType==3) {
+			System.out.println("Du bist in "+city.getName()+". Was möchtest du machen?");
 		}
 		
 		if(journey==true) {
@@ -86,6 +94,12 @@ public class AdventureTime {
 		if(showInventory==true) {
 			System.out.println("7 - Inventar anzeigen");
 		}
+		if(journeyCon==true) {
+			System.out.println("8 - Reise fortsetzen");
+		}
+		if(locationType==3) {
+			System.out.println("9 - zum Haus begeben");
+		}
 		
 		//Enter data using BufferReader 
         BufferedReader reader =  
@@ -103,7 +117,7 @@ public class AdventureTime {
 			System.out.println("Reise nach "+city.getName()+" wird ca. "+Math.round(city.distance(hero)/6)+" Stunden dauern.");
 			System.out.println("Nach "+city.getName()+" reisen?");
 			next = false;
-			Travel(hero,monster,city);
+			Travel(hero,monster,city,trader);
 		}
 		else if(fight==true&&action.equals("2")) {
 			System.out.println("Kampf");
@@ -111,12 +125,17 @@ public class AdventureTime {
 			Fight(hero, monster);
 		}
 		else if(rest==true&&action.equals("3")) {
+			world.setTime(1);
 			System.out.println("Eine Stunde gewartet.");
+			System.out.println(world.showTime());
 			next = false;
-			Action(hero,monster,city);
+			Action(hero,monster,city,trader);
 		}
 		else if(trade==true&&action.equals("4")) {
 			System.out.println("4 - Waren handeln");
+			trader.trade(hero);
+			next = false;
+			Action(hero,monster,city,trader);
 		}
 		else if(potion==true&&action.equals("5")) {
 			System.out.println(hero.usePotion());
@@ -126,6 +145,26 @@ public class AdventureTime {
 		}else if(showInventory==true&&action.equals("7")) {
 			System.out.println(hero.getInv());
 			next = false;
+		}else if(journeyCon==true&&action.equals("8")) {
+			System.out.println("Weiter reisen");
+			System.out.println(city.getName()+" ist "+Math.round(hero.getDistanceToTravel())+"km entfernt.");
+			System.out.println("Restliche Reise nach "+city.getName()+" wird ca. "+Math.round(hero.getDistanceToTravel()/6)+" Stunden dauern.");
+			System.out.println("Weiter nach "+city.getName()+" reisen?");
+			next = false;
+			journey=true;
+			Travel(hero,monster,city,trader);
+		}else if(action.equals("9")) {
+			System.out.println("Du begibst dich zum "+house.getName());
+			if(hero.isOwnFlat()==false) {
+				
+				System.out.println("Scheint als waere die Tuer verschlossen...");
+				next = false;
+				Action(hero,monster,city,trader);
+			}else {
+				System.out.println("Yeah die Tuer geht auf!");
+				next = false;
+				Action(hero,monster,city,trader);
+			}
 		}else {
 			System.out.println("Ungueltige Eingabe!");
 			next = false;
@@ -133,8 +172,8 @@ public class AdventureTime {
 		}
 	}
 	
-	public static void Travel(Adventurer hero,Monster monster,City city) throws IOException {
-		while (next==false) {
+	public static boolean Travel(Adventurer hero,Monster monster,City city,Trader trader) throws IOException {
+		while (next==false&&(hero.getDistanceToTravel()==-1||hero.getDistanceToTravel()>0)) {
 			next = true;
 		if(journey==true) {
 			System.out.println("1 - reisen");
@@ -152,14 +191,16 @@ public class AdventureTime {
         // Printing the read line 
         System.out.println();   
         
-		if(journey==true&&action.equals("1")) {
+		if((journey==true||journeyCon==true)&&(action.equals("1")||action.equals("8"))) {
 			System.out.println("Reisen begonnen");
-			trvl_distance = city.distance(hero);
-			while (trvl_distance>0) {
+			if(hero.getDistanceToTravel()==-1) {
+			hero.setDistanceToTravel(city.distance(hero));
+			}
+			while (hero.getDistanceToTravel()>0) {
 			Random r = new Random();
 			float chance = r.nextFloat();
 
-			  if (chance <= 0.20f) {
+			  if (chance <= 0.50f) {
 				  if(foundMonster==false) {
 					foundMonster = true;
 					locationType = 1;
@@ -170,30 +211,41 @@ public class AdventureTime {
 					potion = true;
 					next = false;
 					flee = true;
-					  
-						  Action(hero,monster,city);
+					 	System.out.println("Ein Monster stellt sich dir in den Weg!");
+						  Action(hero,monster,city,trader);
+						  return false;
 				  }
-				  System.out.println(" You encounter a Monster!");
+				 
 			  }
-			  System.out.println("Reise nach wird "+city.getName()+" noch ca. "+Math.round(trvl_distance/6)+" Stunden dauern.");
-			  trvl_distance = trvl_distance-6;
+			  System.out.println("Reise nach wird "+city.getName()+" noch ca. "+Math.round(hero.getDistanceToTravel()/6)+" Stunden dauern.");
+			  hero.setDistanceToTravel(hero.getDistanceToTravel()-6);
 			}
 			System.out.println("Das Ziel befindet sich in 50m auf der rechten Seite.");
+			
+			locationType = 3;
+			journey = false;
+			journeyCon = false;
+			fight = false;
+			rest = true;
+			trade = true;
+			potion = false;
+			next = false;
+			flee = false;
 		}
 		else if(rest==true&&action.equals("2")) {
 			System.out.println("abgebrochen");
 			next = false;
-			Action(hero,monster,city);
+			Action(hero,monster,city,trader);
 		}else {
 			System.out.println("Ungueltige Eingabe!");
 			next = false;
 		}
 		}
+		return fight;
 		
 	}
 	
-	
-	public static void Fight(Adventurer hero,Monster monster) {
+public static void Fight(Adventurer hero,Monster monster) {
 
 		
 		Random rnd_dmg = new Random();
@@ -235,8 +287,9 @@ public class AdventureTime {
 			System.out.println("Du hast den "+monster.getName()+" besiegt!");
 			System.out.println("Du erhaelst "+monster.getGold()+" Gold von dem besiegten "+monster.getName()+".");
 			hero.setGold(hero.getGold()+monster.getGold());
-			locationType = 0;
-			journey = true;
+			locationType = 2;
+			journey = false;
+			journeyCon = true;
 			fight = false;
 			rest = true;
 			trade = false;
@@ -246,5 +299,6 @@ public class AdventureTime {
 		}
 		
 	}
+
 
 }
