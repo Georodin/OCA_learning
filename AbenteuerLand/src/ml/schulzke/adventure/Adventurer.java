@@ -25,7 +25,14 @@ public class Adventurer {
 	}
 	
 	public String getInv(){
-		return "Du besitzt:\n"+this.inv.getGold()+" Gold\n"+this.inv.getPotion()+" Heiltraenke\n";
+		String out = "";
+		
+		out = "Du besitzt:\n"+this.inv.getGold()+" Gold\n"+this.inv.getPotion()+" Heiltraenke\n";
+		if(this.getKeyHouse()==true) {
+			out += "Schluessel zu Haus";
+		}
+		
+		return out;
 	}
 	
 	public double getX(){
@@ -115,7 +122,15 @@ public class Adventurer {
 		this.inv.setPotion(potion);
 	}
 	
-public void fight(Monster monster) {
+	public boolean getKeyHouse(){
+		return this.inv.isKeyHouse();
+	}
+	
+	public void setKeyHouse(boolean keyHouse){
+		this.inv.setKeyHouse(keyHouse);
+	}
+	
+public void fight(Monster monster,Controls controls, World world) {
 
 		
 		Random rnd_dmg = new Random();
@@ -147,6 +162,8 @@ public void fight(Monster monster) {
 				dmg_end = (int) (monster.getStrength()*(1-dmg));
 			}
 			
+			world.setTime(0);
+			
 			this.setHealth(this.getHealth()-dmg_end);
 			
 			System.out.println("Der "+monster.getName()+" tritt dich: "+dmg_end+" Schaden!");
@@ -156,6 +173,25 @@ public void fight(Monster monster) {
 		}else{
 			System.out.println("Du hast den "+monster.getName()+" besiegt!");
 			System.out.println("Du erhaelst "+monster.getGold()+" Gold von dem besiegten "+monster.getName()+".");
+			
+			int duration = world.getTime()-controls.getStartFight();
+			if(duration>=60) {
+				int minutes = (int) Math.floor(duration/60);
+				if(minutes==1) {
+					System.out.println("Der Kampf hat eine Minute und "+(duration-(minutes*60))+" Sekunden gedauert.");
+				}else {
+					System.out.println("Der Kampf hat "+minutes+" Minuten und "+(duration-(minutes*60))+" Sekunden gedauert.");
+				}
+				
+			}else {
+				System.out.println("Der Kampf hat "+duration+" Sekunden gedauert.");
+			}
+			
+			
+			
+			
+			controls.changeControls(4);
+			controls.setLocationType(2);
 			this.setGold(this.getGold()+monster.getGold());
 		}
 		

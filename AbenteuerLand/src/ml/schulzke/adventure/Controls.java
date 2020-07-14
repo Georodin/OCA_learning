@@ -10,12 +10,29 @@ public class Controls {
 	private boolean potion = false;
 	private boolean flee = false;
 	private boolean showInventory = true;
-	private boolean house = true;
+	private boolean house = false;
 	
 	//state
 	private boolean next = false;
+	private boolean nextTrade = false;
+	public boolean isNextTrade() {
+		return nextTrade;
+	}
+	public void setNextTrade(boolean nextTrade) {
+		this.nextTrade = nextTrade;
+	}
+
 	private boolean foundMonster = false;
 	private int locationType = 0;
+	
+	public int getStartFight() {
+		return startFight;
+	}
+	public void setStartFight(int startFight) {
+		this.startFight = startFight;
+	}
+
+	private int startFight = 0;
 	
 	public boolean isJourney() {
 		return journey;
@@ -115,6 +132,7 @@ public class Controls {
 			this.setFlee(true);					//show try to flee
 			this.setShowInventory(true);		//show inventory
 			this.setHouse(false);				//show goTo House
+			System.out.println("Hit");
 		}
 		//fight option without potion
 		if(state==2) {

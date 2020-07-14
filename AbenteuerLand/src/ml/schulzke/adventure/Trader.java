@@ -9,7 +9,6 @@ public class Trader {
 	private int gold = 2400;
 	private int potionPrice = 1;
 	private int flatPrice = 30;
-	private static boolean next = false;
 	
 	
 	public String getName(){
@@ -44,9 +43,9 @@ public class Trader {
 		this.flatPrice = flatPrice;
 	}
 	
-	public void trade(Adventurer hero) throws IOException {
+	public void trade(Adventurer hero,Controls controls) throws IOException {
 		System.out.println("Hallo ich bin "+this.getName()+" ein Haendler unserer schönen Stadt. Ich biete nur die besten Waren für Reisende an.\n");
-		while(next==false) {
+		while(controls.isNextTrade()==false) {
 		System.out.println("Für dich habe ich Heiltraenke für "+this.getPotionPrice()+" Gold pro Trank.\n");
 		if(hero.isOwnFlat()==false) {
 			System.out.println("Oder vielleicht ein schönes Zimmer für "+this.getFlatPrice()+" Gold in einer Lehmhuette am Rand der Stadt?");
@@ -74,28 +73,30 @@ public class Trader {
 				hero.setGold(hero.getGold()-1);
 				hero.setPotion(hero.getPotion()+1);
 				System.out.println("Hier ein Heiltrank hoechster Qualität für Euch!");
-				next = false;
+				controls.setNextTrade(false);
 			}else {
 				System.out.println("Bitte kommt wieder wenn Ihr genuegend Gold habt...");
-				next = true;
+				controls.setNextTrade(true);
 			}
 		}else if(action.equals("2")&&hero.isOwnFlat()==false) {
 			if(hero.getGold()>=this.getFlatPrice()) {
 				hero.setGold(hero.getGold()-this.getFlatPrice());
 				hero.setOwnFlat(true);
+				hero.setKeyHouse(true);
 				System.out.println("Hier die Schlüssel. Schaut doch gleich mal vorbei!");
-				next = false;
+				controls.setNextTrade(false);
 			}else {
 				System.out.println("Bitte kommt wieder wenn Ihr genuegend Gold habt...");
 				System.out.println("Euch fehlen noch "+(this.getFlatPrice()-hero.getGold())+" Gold zum Eigenheim!");
-				next = false;
+				controls.setNextTrade(false);
 			}
 		}else if(action.equals("3")) {
 			System.out.println("Handel beendet!");
-			next = true;
+			controls.setNextTrade(true);
+			
 		}else {
 			System.out.println("Ungueltige Eingabe!");
-			next = false;
+			controls.setNextTrade(false);
 		}
         
 		}

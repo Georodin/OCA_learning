@@ -4,7 +4,16 @@ public class Inventory {
 	
 	private int gold = 0;
 	private int potion = 3;
+	private boolean keyHouse = false;
 	
+	public boolean isKeyHouse() {
+		return keyHouse;
+	}
+
+	public void setKeyHouse(boolean keyHouse) {
+		this.keyHouse = keyHouse;
+	}
+
 	public int getGold(){
 		return this.gold;
 	}
