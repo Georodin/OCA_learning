@@ -17,6 +17,8 @@ public class AdventureTime {
 	public static void main(String[] args) throws IOException {
 		
 		Adventurer hero = new Adventurer();
+		hero.setPotion(3);
+		hero.setGold(60);
 		Monster monster = new Monster();
 		City city = new City();
 		Trader trader = new Trader();
@@ -176,7 +178,7 @@ public class AdventureTime {
 					Random r = new Random();
 					float chance = r.nextFloat();
 	
-				  if (chance <= 0.50f) {
+				  if (chance <= 0.01f) {
 					  if(controls.isFoundMonster()==false) {
 						controls.setFoundMonster(true);
 						 	System.out.println("Ein Monster stellt sich dir in den Weg!");

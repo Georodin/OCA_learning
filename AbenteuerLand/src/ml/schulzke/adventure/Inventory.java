@@ -3,7 +3,7 @@ package ml.schulzke.adventure;
 public class Inventory {
 	
 	private int gold = 0;
-	private int potion = 3;
+	private int potion = 0;
 	private boolean keyHouse = false;
 	
 	public boolean isKeyHouse() {
