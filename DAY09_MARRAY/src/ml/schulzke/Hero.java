@@ -12,8 +12,8 @@ public class Hero {
 	private boolean ownFlat = false;
 	
 	private int strength = 10;
-	private double x = 0;
-	private double y = 0;
+	private double x = 285;
+	private double y = 182;
 	
 	public boolean isOwnFlat(){
 	    return ownFlat;

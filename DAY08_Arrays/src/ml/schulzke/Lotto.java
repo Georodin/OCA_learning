@@ -28,15 +28,68 @@ public class Lotto {
 			lotto = rndLotto();
 			tries++;
 		}
+		
 		System.out.println("Gewonnen nach "+tries+" Spielen!");
 		System.out.println("Das haette "+(tries*6)+"€ gekostet!");
+		System.out.println("Das haette "+Math.floor(tries/52)+" Jahre gedauert!");
 		System.out.println("----------");
 		getLotto(lotto);
 		System.out.println("----------");
 		getLotto(lottoUser);
+		
+		System.out.println("----------");
+		
+		int[][] lotto52 = new int[52][6];
+		
+		for(int i = 0;i<lotto52.length;i++) {
+			System.out.println("\n Lottozahlen der "+(i+1)+". Woche!");
+			lotto52[i] = rndLotto();
+			getLotto(lotto52[i]);
+		}
+		
+		int inc = getLottoCount();
+		int[][] lottoVar = new int[inc][6];
+		
+		for(int i = 0;i<lottoVar.length;i++) {
+			System.out.println("\n Lottozahlen der "+(i+1)+". Ziehung!");
+			lottoVar[i] = rndLotto();
+			getLotto(lottoVar[i]);
+		}
 	}
 	
 	
+private static int getLottoCount() throws IOException {
+		System.out.println("----------");
+		
+		//Enter data using BufferReader 
+        BufferedReader reader;
+        
+        // Reading data using readLine 
+        String action = null;
+        
+		while(!isNumeric(action)) {
+			System.out.println("Wie viele Ziehungen? Jetzt ");
+			
+        	reader =  
+            new BufferedReader(new InputStreamReader(System.in));
+			action = reader.readLine();
+			
+			if(!isNumeric(action)) {
+				System.out.println("Nur Zahlen eingeben...");
+			}else {
+				int check = Integer.parseInt(action);
+				if(check<=0){
+					System.out.println("Nur positive Zahlen!");
+					action = null;
+				}
+			}
+		
+		}
+		
+		return Integer.parseInt(action);
+	}
+
+
 	/* create a random lotto array
 	 * iterate over empty array 
 	 * fill array[i] with random 1-49 if random !exist in array
@@ -92,8 +145,9 @@ public class Lotto {
 	// print lotto array to console
 	static void getLotto(int[] lotto) {
 		for(int entry : lotto) {
-			System.out.println(entry);
+			System.out.print(entry+"	");
 		}
+		System.out.print("\n");
 	}
 	
 	/* input array and int to check existing within array

@@ -13,8 +13,8 @@ public class Hero {
 	
 	private int strength = 10;
 	private Inventory inv = new Inventory(); // Gold > Weapons > Clothing > Potions
-	private double x = 0;
-	private double y = 0;
+	private double x = 285;
+	private double y = 182;
 	
 	public boolean isOwnFlat(){
 	    return ownFlat;

@@ -9,7 +9,6 @@ public class AdventureTime {
 	
 	static Float trvl_distance = -1f;
 	
-	
 	static House house = new House();
 	static World world = new World();
 	static Controls controls = new Controls();
@@ -20,7 +19,15 @@ public class AdventureTime {
 		hero.setPotion(3);
 		hero.setGold(60);
 		Monster monster = new Monster();
-		City city = new City();
+		City[] city = new City[3];
+		
+		city[0] = new City("Men-nefer",290,165);
+		city[1] = new City("Heliopolis",262,170);
+		city[2] = new City("Merimda",250,130);
+		
+		System.out.println(city[0].distance(hero));
+		System.out.println(city[1].distance(hero));
+		System.out.println(city[2].distance(hero));
 		Trader trader = new Trader();
 
 		System.out.println("Es ist der 5. Tag des Achet II im Lande Kemet!");
@@ -42,16 +49,16 @@ public class AdventureTime {
 		System.out.println(world.getTime());
 		Fight(hero, monster);
 		System.out.println(city);
-		System.out.println(city.distance(hero));
+		System.out.println(city[0]distance(hero));
 		System.out.println(City.noOfCitys); 
 		
 		*/
-		Action(hero,monster,city,trader);
+		Action(hero,monster,city[0],trader,city);
 
 		
 	}
 	
-	public static void Action(Hero hero,Monster monster,City city,Trader trader) throws IOException {
+	public static void Action(Hero hero,Monster monster,City city,Trader trader, City[] citys) throws IOException {
 		
 		while (controls.isNext()==false) {
 			
@@ -80,11 +87,11 @@ public class AdventureTime {
 		
 		if(controls.isJourney()==true&&action.equals("1")) {
 			System.out.println("Reisen");
-			System.out.println(city.getName()+" ist "+Math.round(city.distance(hero))+"km entfernt.");
-			System.out.println("Reise nach "+city.getName()+" wird ca. "+Math.round(city.distance(hero)/6)+" Stunden dauern.");
-			System.out.println("Nach "+city.getName()+" reisen?");
+			city.getDistances(hero, citys);
+			city.selectCity(hero, citys);
+			
 			controls.setNext(false);
-			Travel(hero,monster,city,trader);
+			Travel(hero,monster,city,trader,citys);
 			
 		}
 		else if(controls.isFight()==true&&action.equals("2")) {
@@ -98,7 +105,7 @@ public class AdventureTime {
 			System.out.println("Eine Stunde gewartet.");
 			System.out.println(world.showTime());
 			controls.setNext(false);
-			Action(hero,monster,city,trader);
+			Action(hero,monster,city,trader,citys);
 			
 		}
 		else if(controls.isTrade()==true&&action.equals("4")) {
@@ -106,7 +113,7 @@ public class AdventureTime {
 			controls.setNext(false);
 			controls.setNextTrade(false);
 			trader.trade(hero, controls);
-			Action(hero,monster,city,trader);
+			Action(hero,monster,city,trader,citys);
 			
 		}
 		else if(controls.isPotion()&&action.equals("5")) {
@@ -127,7 +134,7 @@ public class AdventureTime {
 			System.out.println("Weiter nach "+city.getName()+" reisen?");
 			controls.setNext(false);
 			controls.setJourney(true);
-			Travel(hero,monster,city,trader);
+			Travel(hero,monster,city,trader,citys);
 			
 		}else if(controls.isHouse()==true&&action.equals("9")) {
 			System.out.println("Du begibst dich zum "+house.getName());
@@ -135,12 +142,12 @@ public class AdventureTime {
 				
 				System.out.println("Scheint als waere die Tuer verschlossen...");
 				controls.setNext(false);
-				Action(hero,monster,city,trader);
+				Action(hero,monster,city,trader,citys);
 			}else {
 				System.out.println("Yeah die Tuer geht auf!");
 				house.store(hero, world);
 				controls.setNext(false);
-				Action(hero,monster,city,trader);
+				Action(hero,monster,city,trader,citys);
 			}
 		}else {
 			System.out.println("Ungueltige Eingabe!");
@@ -150,7 +157,7 @@ public class AdventureTime {
 		}
 	}
 	
-	public static boolean Travel(Hero hero,Monster monster,City city,Trader trader) throws IOException {
+	public static boolean Travel(Hero hero,Monster monster,City city,Trader trader,City[] citys) throws IOException {
 		while (controls.isNext()==false&&(hero.getDistanceToTravel()==-1||hero.getDistanceToTravel()>0)) {
 				controls.setNext(false);
 			if(controls.isJourney()==true) {
@@ -185,7 +192,7 @@ public class AdventureTime {
 						 	controls.setStartFight(world.getTime());
 						 	controls.changeControls(1);
 						 	controls.setLocationType(1);
-						 	Action(hero,monster,city,trader);
+						 	Action(hero,monster,city,trader,citys);
 							  return false;
 					  }
 					 
@@ -203,7 +210,7 @@ public class AdventureTime {
 			else if(controls.isRest()==true&&action.equals("2")) {
 				System.out.println("abgebrochen");
 				controls.setNext(false);
-				Action(hero,monster,city,trader);
+				Action(hero,monster,city,trader,citys);
 			}else {
 				System.out.println("Ungueltige Eingabe!");
 				controls.setNext(false);
