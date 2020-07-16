@@ -1,3 +1,4 @@
+package ml.schulzke;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +9,7 @@ public class Lotto {
 	public static void main(String[] args) throws IOException {
 		int[] lotto = new int[6];
 		int[] lottoUser = new int[6];
+		long tries = 0l;
 		
 		lotto = rndLotto();
 		getLotto(lotto);
@@ -19,6 +21,18 @@ public class Lotto {
 		getLotto(lottoUser);
 		System.out.println("----------");
 		sortLotto(lottoUser);
+		getLotto(lottoUser);
+		System.out.println(compareLotto(lotto, lottoUser));
+		
+		while(!compareLotto(lotto, lottoUser)) {
+			lotto = rndLotto();
+			tries++;
+		}
+		System.out.println("Gewonnen nach "+tries+" Spielen!");
+		System.out.println("Das haette "+(tries*6)+"€ gekostet!");
+		System.out.println("----------");
+		getLotto(lotto);
+		System.out.println("----------");
 		getLotto(lottoUser);
 	}
 	
@@ -40,6 +54,20 @@ public class Lotto {
 		}
         return lotto;
     }
+	
+	static boolean compareLotto(int[] lotto, int[] lottoUser) {
+		boolean check = false;
+		int find = 0;
+		for(int entry : lotto) {
+			if(checkExist(lottoUser,entry)) {
+				find++;
+			}
+		}
+		if(find==6) {
+			check = true;
+		}
+		return check;
+	}
 	
 	/* input lotto array
 	 * iterate over array

@@ -16,7 +16,7 @@ public class AdventureTime {
 
 	public static void main(String[] args) throws IOException {
 		
-		Adventurer hero = new Adventurer();
+		Hero hero = new Hero();
 		hero.setPotion(3);
 		hero.setGold(60);
 		Monster monster = new Monster();
@@ -51,7 +51,7 @@ public class AdventureTime {
 		
 	}
 	
-	public static void Action(Adventurer hero,Monster monster,City city,Trader trader) throws IOException {
+	public static void Action(Hero hero,Monster monster,City city,Trader trader) throws IOException {
 		
 		while (controls.isNext()==false) {
 			
@@ -150,7 +150,7 @@ public class AdventureTime {
 		}
 	}
 	
-	public static boolean Travel(Adventurer hero,Monster monster,City city,Trader trader) throws IOException {
+	public static boolean Travel(Hero hero,Monster monster,City city,Trader trader) throws IOException {
 		while (controls.isNext()==false&&(hero.getDistanceToTravel()==-1||hero.getDistanceToTravel()>0)) {
 				controls.setNext(false);
 			if(controls.isJourney()==true) {

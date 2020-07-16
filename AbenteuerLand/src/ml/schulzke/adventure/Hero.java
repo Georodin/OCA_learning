@@ -2,7 +2,7 @@ package ml.schulzke.adventure;
 
 import java.util.Random;
 
-public class Adventurer {
+public class Hero {
 	
 	private String name = "name";
 	private int age = 0;

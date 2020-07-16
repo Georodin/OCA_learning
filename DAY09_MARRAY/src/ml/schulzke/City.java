@@ -1,21 +1,16 @@
-package ml.schulzke.adventure;
+package ml.schulzke;
 
 public class City {
 	
-	static int noOfCitys = 0; 
-    { 
-    	noOfCitys += 1; 
-    } 
-	
-	private String name = "Men-nefer";
-	private int posX = 15;
-	private int posY = 15;
+	private String name;
+	private int posX;
+	private int posY;
 	
 	
-	public void setData(String namein,int x,int y){
-		   name = namein;
-		   posX = x;
-		   posY = y;
+	public City(String name,int x,int y){
+		   this.name = name;
+		   this.posX = x;
+		   this.posY = y;
 	}
 	
 	public String getName(){
@@ -41,7 +36,6 @@ public class City {
 	public void setPosY(int posY){
 		this.posY = posY;
 	}
-	
 	
 	public float distance(Hero hero) {
 		return (float) Math.sqrt(((this.posX-hero.getX())*(this.posX-hero.getX()))+((this.posY-hero.getY())*(this.posY-hero.getY())));

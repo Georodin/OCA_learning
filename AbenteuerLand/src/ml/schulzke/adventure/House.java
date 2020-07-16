@@ -36,7 +36,7 @@ public class House {
 		this.inv.setPotion(potion);
 	}
 	
-	public void store(Adventurer hero, World world) throws IOException {
+	public void store(Hero hero, World world) throws IOException {
 		System.out.println("Du bist in deinem Zimmer im "+this.getName());
 		while(next==false) {
 			System.out.println("Was möchtest du machen?\n");
@@ -78,7 +78,7 @@ public class House {
 		}
 	}
 	
-	public void storePotions(Adventurer hero, World world) throws IOException {
+	public void storePotions(Hero hero, World world) throws IOException {
 		while(next==false) {
 			
 			System.out.println("In deiner Kiste hast du "+this.getPotion()+" Traenke.");
@@ -119,13 +119,13 @@ public class House {
 		
 	}
 	
-	static String potionCount(House house, Adventurer hero) {
+	static String potionCount(House house, Hero hero) {
 		return "In deiner Kiste hast du "+house.getPotion()+" Traenke.\n"+
 		"In deinem Inventar hast du "+hero.getPotion()+" Traenke.\n"+
 		"Gib ein wie viele Traenke du ablegen moechtest: (maximal "+hero.getPotion()+")";
 	}
 	
-	static void inputPot_Number(House house, Adventurer hero, World world, int state) throws IOException {
+	static void inputPot_Number(House house, Hero hero, World world, int state) throws IOException {
 		
 		//Enter data using BufferReader 
         BufferedReader reader;

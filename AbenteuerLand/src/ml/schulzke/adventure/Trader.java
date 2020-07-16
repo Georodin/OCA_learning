@@ -43,7 +43,7 @@ public class Trader {
 		this.flatPrice = flatPrice;
 	}
 	
-	public void trade(Adventurer hero,Controls controls) throws IOException {
+	public void trade(Hero hero,Controls controls) throws IOException {
 		System.out.println("Hallo ich bin "+this.getName()+" ein Haendler unserer schönen Stadt. Ich biete nur die besten Waren für Reisende an.\n");
 		while(controls.isNextTrade()==false) {
 		System.out.println("Für dich habe ich Heiltraenke für "+this.getPotionPrice()+" Gold pro Trank.\n");
