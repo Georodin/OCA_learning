@@ -17,7 +17,12 @@ public class World {
 	}
 	
 	public void setTime(int state){
-		//state 0 fight 5seconds, 1 travel/wait 1hour, 2 trade 5min, 3 move within city/dungon 20min, 4 sleep/eat 10hours
+		/* 0 fight 5seconds,
+		 * 1 travel/wait 1hour
+		 * 2 trade 5min
+		 * 3 move within city/dungon 20min
+		 * 4 sleep/eat 10hours
+		 */
 		if(state==0) {
 			this.time = this.time+5;
 		}else if(state==1){

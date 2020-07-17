@@ -3,6 +3,7 @@ package ml.schulzke;
 public class DEMO_MARRY {
 	
 	public static void main(String[] args) {
+		
 		City[] city = new City[3];
 		Hero hero = new Hero();
 		
@@ -16,6 +17,7 @@ public class DEMO_MARRY {
 		
 		array();
 	}
+
 	
 	public static void array() {
 		int[][][] test = {

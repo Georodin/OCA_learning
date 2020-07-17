@@ -15,6 +15,14 @@ public class Controls {
 	//state
 	private boolean next = false;
 	private boolean nextTrade = false;
+	private City currentCity = null;
+	
+	public City getCurrentCity() {
+		return currentCity;
+	}
+	public void setCurrentCity(City currentCity) {
+		this.currentCity = currentCity;
+	}
 	public boolean isNextTrade() {
 		return nextTrade;
 	}
@@ -172,7 +180,7 @@ public class Controls {
 		}
 		//options in city
 		if(state==5) {
-			this.setJourney(false);				//show start journey
+			this.setJourney(true);				//show start journey
 			this.setJourneyCon(false);			//show continue journey
 			this.setFight(false);				//show fight 1turn
 			this.setRest(true);					//show rest 1h
