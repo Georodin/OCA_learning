@@ -2,9 +2,10 @@ ToDo
 
 CHECK	store and grab gold and potions
 CHECK	add times to all actions
-rename houses and traders regarding to citys
+CHECK/PARTWISE	rename houses and traders regarding to citys
 add death/knockout
-add equipment at trader
+CHECK	add equipment at trader
+add tavern in city for dungon locations and other quest
 add realtime usage of coordinates
-add dungon
+add dungon, more monsters and xp to fight system
 add more loot
