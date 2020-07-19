@@ -11,11 +11,13 @@ public class Controls {
 	private boolean flee = false;
 	private boolean showInventory = true;
 	private boolean house = false;
+	private boolean stats = true;
 	
 	//state
 	private boolean next = false;
 	private boolean nextTrade = false;
 	private City currentCity = null;
+	private boolean travelAbbort = false;
 	
 	public City getCurrentCity() {
 		return currentCity;
@@ -128,6 +130,7 @@ public class Controls {
 		this.setFlee(false);				//show try to flee
 		this.setShowInventory(false);		//show inventory
 		this.setHouse(false);				//show goTo House
+		this.setStats(false);				//show goTo House
 		}
 		//fight option with potion
 		if(state==1) {
@@ -140,7 +143,7 @@ public class Controls {
 			this.setFlee(true);					//show try to flee
 			this.setShowInventory(true);		//show inventory
 			this.setHouse(false);				//show goTo House
-			System.out.println("Hit");
+			this.setStats(true);
 		}
 		//fight option without potion
 		if(state==2) {
@@ -153,6 +156,7 @@ public class Controls {
 			this.setFlee(true);					//show try to flee
 			this.setShowInventory(true);		//show inventory
 			this.setHouse(false);				//show goTo House
+			this.setStats(true);
 		}
 		//start journey
 		if(state==3) {
@@ -165,6 +169,7 @@ public class Controls {
 			this.setFlee(false);				//show try to flee
 			this.setShowInventory(true);		//show inventory
 			this.setHouse(false);				//show goTo House
+			this.setStats(true);
 		}
 		//continue journey
 		if(state==4) {
@@ -177,6 +182,7 @@ public class Controls {
 			this.setFlee(false);				//show try to flee
 			this.setShowInventory(true);		//show inventory
 			this.setHouse(false);				//show goTo House
+			this.setStats(true);
 		}
 		//options in city
 		if(state==5) {
@@ -189,6 +195,7 @@ public class Controls {
 			this.setFlee(false);				//show try to flee
 			this.setShowInventory(true);		//show inventory
 			this.setHouse(true);				//show goTo House
+			this.setStats(true);
 		}
 	}
 	
@@ -221,7 +228,22 @@ public class Controls {
 		if(this.isHouse()==true) {
 			out +="9 - zum Haus begeben\n";
 		}
+		if(this.isStats()==true) {
+			out +="10 - Stats ansehen\n";
+		}
 		return out;
+	}
+	public boolean isStats() {
+		return stats;
+	}
+	public void setStats(boolean stats) {
+		this.stats = stats;
+	}
+	public boolean isTravelAbbort() {
+		return travelAbbort;
+	}
+	public void setTravelAbbort(boolean travelAbbort) {
+		this.travelAbbort = travelAbbort;
 	}
 	
 }

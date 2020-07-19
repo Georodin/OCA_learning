@@ -13,6 +13,7 @@ public class Trader {
 	private int gold = 2400;
 	private int potionPrice = 1;
 	private int flatPrice = 30;
+	private Item sword = new Item(false,true,false,false,false, "einfacher Chepesch", 15, 2800, 7);
 	
 	Trader(){
 		this.setName(traderNames[getRndInt(0,traderNames.length-1)]);
@@ -55,19 +56,25 @@ public class Trader {
 		this.flatPrice = flatPrice;
 	}
 	
-	public void trade(Hero hero,Controls controls,City city,World world) throws IOException {
+	public void trade(Hero hero,City city,World world) throws IOException {
 		System.out.println("Hallo ich bin "+this.getName()+" ein Haendler unserer schönen Stadt. Ich biete nur die besten Waren für Reisende an.\n");
-		while(controls.isNextTrade()==false) {
-		System.out.println("Für dich habe ich Heiltraenke für "+this.getPotionPrice()+" Gold pro Trank.\n");
-		if(hero.isOwnFlat()==false) {
-			System.out.println("Oder vielleicht ein schönes Zimmer für "+this.getFlatPrice()+" Gold in einer Lehmhuette am Rand der Stadt?");
+		while(world.controls.isNextTrade()==false) {
+		System.out.println("Fuer dich habe ich Heiltraenke fuer "+this.getPotionPrice()+" Gold pro Trank.");
+		System.out.println("Vielleicht ein "+sword.getName()+" fuer "+sword.getPrice()+" Gold(Waffe)");
+		System.out.println("Ich habe viele davon im Angebot...");
+		if(city.house.isOwned()==false) {
+			System.out.println("Oder vielleicht ein schoenes Zimmer für "+this.getFlatPrice()+" Gold in einer Lehmhuette am Rand von "+city.getName()+"?");
 		}
+		System.out.println("Ihr habt "+hero.getGold()+" Gold");
+		
 		world.setTime(2);
 		System.out.println("1 - Heiltrank kaufen "+this.getPotionPrice()+" Gold");
+		System.out.println("2 - "+sword.getName()+" kaufen "+sword.getPrice()+" Gold");
 		if(city.house.isOwned()==false) {
-		System.out.println("2 - Zimmer kaufen "+this.getFlatPrice()+" Gold");
+		System.out.println("3 - Zimmer kaufen "+this.getFlatPrice()+" Gold");
 		}
-		System.out.println("3 - handel beenden");
+		System.out.println("4 - Gegenstaende verkaufen");
+		System.out.println("5 - handel beenden");
 		
 		
 		//Enter data using BufferReader 
@@ -85,29 +92,94 @@ public class Trader {
 				hero.setGold(hero.getGold()-1);
 				hero.setPotion(hero.getPotion()+1);
 				System.out.println("Hier ein Heiltrank hoechster Qualität für Euch!");
-				controls.setNextTrade(false);
+				world.controls.setNextTrade(false);
 			}else {
 				System.out.println("Bitte kommt wieder wenn Ihr genuegend Gold habt...");
-				controls.setNextTrade(true);
+				world.controls.setNextTrade(true);
 			}
-		}else if(action.equals("2")&&city.house.isOwned()==false) {
+		}else if(action.equals("2")) {
+			if(hero.getGold()>=sword.getPrice()) {
+				if((hero.getPack()-sword.getWeight())>=0) {
+					System.out.println("Hier Euer "+sword.getName()+". ");
+					hero.setGold((int) (hero.getGold()-sword.getPrice()));
+					hero.inv.setItems(sword);
+					world.controls.setNextTrade(false);
+				}else {
+					System.out.println("Ihr seid uberlastet! Wie wollt Ihr das den ueberhaupt tragen?");
+					world.controls.setNextTrade(false);
+				}
+
+			}else {
+				System.out.println("Bitte kommt wieder wenn Ihr genuegend Gold habt...");
+				System.out.println("Euch fehlen noch "+(sword.getPrice()-hero.getGold())+" Gold zu "+sword.getPrice()+" Gold zum Erwerb.");
+				world.controls.setNextTrade(false);
+			}
+		}else if(action.equals("3")&&city.house.isOwned()==false) {
 			if(hero.getGold()>=this.getFlatPrice()) {
 				hero.setGold(hero.getGold()-this.getFlatPrice());
 				city.house.setOwned(true);
 				System.out.println("Hier die Schlüssel. Schaut doch gleich mal vorbei!");
-				controls.setNextTrade(false);
+				world.controls.setNextTrade(false);
 			}else {
 				System.out.println("Bitte kommt wieder wenn Ihr genuegend Gold habt...");
 				System.out.println("Euch fehlen noch "+(this.getFlatPrice()-hero.getGold())+" Gold zum Eigenheim!");
-				controls.setNextTrade(false);
+				world.controls.setNextTrade(false);
 			}
-		}else if(action.equals("3")) {
+		}else if(action.equals("4")) {
+			if(hero.inv.getInventoryLength()!=0) {
+				boolean next = false;
+				while(next==false) {
+				Item items[] = hero.inv.getItems();
+				int itemIDs[] = new int[50];
+				int itemID = 0;
+				System.out.println("Was moechtest du verkaufen?");
+				for(int i = 0;i<items.length;i++) {
+					if(items[i]!=null) {
+						System.out.println((itemID+1)+" - "+items[i].getName()+" "+Math.round(items[i].getPrice()*0.7)+" Gold");
+						itemIDs[itemID] = i;
+						itemID++;
+					}
+					
+				}
+				System.out.println((itemID+1)+" - abbrechen");
+				//Enter data using BufferReader 
+		        BufferedReader sellreader =  
+		                   new BufferedReader(new InputStreamReader(System.in)); 
+		         
+		        // Reading data using readLine 
+		        String sell = reader.readLine(); 
+		        
+		        for(int b = 0;b<itemID;b++) {
+		        	if(sell.equals(""+(b+1))) {
+		        		System.out.println("Du hast "+items[itemIDs[b]].getName()+" fuer "+Math.round(items[itemIDs[b]].getPrice()*0.7)+" Gold verkauft.\n");
+		        		hero.setGold((int) (hero.getGold()+Math.round(items[itemIDs[b]].getPrice()*0.7)));
+		        		hero.inv.setItem(itemIDs[b]);
+		        		next = true;
+					}
+				}
+		        if(sell.equals(""+(itemID+1))) {
+		        	System.out.println("abgebrochen");
+		        	next = true;
+		        }
+		        if(next==false) {
+		        	System.out.println("Ungueltige Eingabe!");
+		        }
+		        
+				
+		        
+				}
+			}else {
+				System.out.println("Du hast keine Items im Inventar...");
+			}
+			world.controls.setNextTrade(false);
+			
+		}else if(action.equals("5")) {
 			System.out.println("Handel beendet!");
-			controls.setNextTrade(true);
+			world.controls.setNextTrade(true);
 			
 		}else {
 			System.out.println("Ungueltige Eingabe!");
-			controls.setNextTrade(false);
+			world.controls.setNextTrade(false);
 		}
         
 		}

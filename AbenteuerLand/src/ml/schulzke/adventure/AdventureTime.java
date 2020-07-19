@@ -9,68 +9,50 @@ public class AdventureTime {
 	
 	static Float trvl_distance = -1f;
 	
-	static World world = new World();
-	static Controls controls = new Controls();
+	
+	
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
+		
+		printIntro();
 		
 		Hero hero = new Hero();
 		hero.setPotion(3);
-		hero.setGold(60);
+		hero.setGold(2000);
+		
+		World world = new World();
+		
 		Monster monster = new Monster();
 		City[] city = new City[4];
 		
-		city[0] = new City("Men-nefer",290,165);
-		city[1] = new City("Heliopolis",262,170);
-		city[2] = new City("Merimda",250,130);
-		city[3] = new City("Heracleion",75,150);
-		
-		Trader trader = new Trader();
+		city[0] = new City("Men-nefer",290,165,"Menouthis Weg 4");
+		city[1] = new City("Heliopolis",262,170,"Iteru Allee 36");
+		city[2] = new City("Merimda",250,130,"Hedjet Straße 7");
+		city[3] = new City("Heracleion",75,150,"Uat-Ur Straße 15");
 
 		System.out.println("Es ist der 5. Tag des Achet II im Lande Kemet!");
 		System.out.println("Sei auf der Hut Abenteurer, gefährliche Kreaturen lauern in diesen Gefilden.\n");
 		
-		/*City obj[] = new City[4];
-		
-		obj[0].setData("Hello", 15,15);
-		obj[1].setData("Hello", 15,15);
-		obj[2].setData("Hello", 15,15);
-		obj[3].setData("Hello", 15,15);
-		
-		
-		
-		world.setTime(0);
-		world.setTime(1);
-		world.setTime(2);
-		world.setTime(3);
-		System.out.println(world.getTime());
-		Fight(hero, monster);
-		System.out.println(city);
-		System.out.println(city[0]distance(hero));
-		System.out.println(City.noOfCitys); 
-		
-		*/
-		Action(hero,monster,city[0],city);
+		Action(hero,monster,city[0],city, world);
 
 		
 	}
 	
-	public static void Action(Hero hero,Monster monster,City city, City[] citys) throws IOException {
-		
-		while (controls.isNext()==false) {
+	public static void Action(Hero hero,Monster monster,City city, City[] citys, World world) throws IOException {
+		while (world.controls.isNext()==false) {
 			
-			controls.setNext(true);
+			world.controls.setNext(true);
 			
-		if(controls.getLocationType()==0) {
+		if(world.controls.getLocationType()==0) {
 			System.out.println("Du bist in der Wildniss! Was möchtest du machen?");
-		}else if(controls.getLocationType()==1) {
+		}else if(world.controls.getLocationType()==1) {
 			System.out.println("Du bist in einem Kampf mit einem "+monster.getName());
-		}else if(controls.getLocationType()==2) {
+		}else if(world.controls.getLocationType()==2) {
 			System.out.println("Du bist in der Wildniss! Moechtest du die Reise fortsetzen?");
-		}else if(controls.getLocationType()==3) {
-			System.out.println("Du bist in "+controls.getCurrentCity().getName()+". Was möchtest du machen?");
+		}else if(world.controls.getLocationType()==3) {
+			System.out.println("Du bist in "+world.controls.getCurrentCity().getName()+". Was möchtest du machen?");
 		}
-		System.out.println(controls.print());
+		System.out.println(world.controls.print());
 		
 		//Enter data using BufferReader 
         BufferedReader reader =  
@@ -82,90 +64,94 @@ public class AdventureTime {
         // Printing the read line 
         System.out.println();   
 		
-		if(controls.isJourney()==true&&action.equals("1")) {
+		if(world.controls.isJourney()==true&&action.equals("1")) {
 			System.out.println("Reisen");
-			city.getDistances(hero, citys, city, controls);
-			city = city.selectCity(hero, citys, city, controls);
-			
-			controls.setNext(false);
-			Travel(hero,monster,city,citys);
+			city.getDistances(hero, citys, city, world);
+			city = city.selectCity(hero, monster, citys, city, world);
+			world.controls.setNext(false);
+			if(world.controls.isTravelAbbort()==false) {
+			Travel(hero,monster,city,citys, world);
 			hero.setDistanceToTravel(-1f);
+			}else {
+				
+			}
 		}
-		else if(controls.isFight()==true&&action.equals("2")) {
+		else if(world.controls.isFight()==true&&action.equals("2")) {
 			System.out.println("Kampf");
-			controls.setNext(false);
-			hero.fight(monster, controls, world);
+			world.controls.setNext(false);
+			hero.fight(monster, world);
 			
 		}
-		else if(controls.isRest()==true&&action.equals("3")) {
+		else if(world.controls.isRest()==true&&action.equals("3")) {
 			world.setTime(1);
 			System.out.println("Eine Stunde gewartet.");
 			System.out.println(world.showTime());
-			controls.setNext(false);
-			Action(hero,monster,city,citys);
+			world.controls.setNext(false);
+			Action(hero,monster,city,citys, world);
 			
 		}
-		else if(controls.isTrade()==true&&action.equals("4")) {
+		else if(world.controls.isTrade()==true&&action.equals("4")) {
 			world.setTime(3);
 			System.out.println("4 - Waren handeln");
-			controls.setNext(false);
-			controls.setNextTrade(false);
-			city.trader.trade(hero, controls, city, world);
+			world.controls.setNext(false);
+			world.controls.setNextTrade(false);
+			city.trader.trade(hero, city, world);
 			
-			Action(hero,monster,city,citys);
+			Action(hero,monster,city,citys, world);
 			
 		}
-		else if(controls.isPotion()&&action.equals("5")) {
+		else if(world.controls.isPotion()&&action.equals("5")) {
 			System.out.println(hero.usePotion());
-			controls.setNext(false);
+			world.controls.setNext(false);
 			
-		}else if(controls.isFlee()==true&&action.equals("6")) {
+		}else if(world.controls.isFlee()==true&&action.equals("6")) {
 			System.out.println("6 - Geflohen!");
 			
-		}else if(controls.isShowInventory()==true&&action.equals("7")) {
+		}else if(world.controls.isShowInventory()==true&&action.equals("7")) {
 			System.out.println(hero.getInv());
-			controls.setNext(false);
+			world.controls.setNext(false);
 			
-		}else if(controls.isJourneyCon()==true&&action.equals("8")) {
+		}else if(world.controls.isJourneyCon()==true&&action.equals("8")) {
 			System.out.println("Weiter reisen");
 			System.out.println(city.getName()+" ist "+Math.round(hero.getDistanceToTravel())+"km entfernt.");
 			System.out.println("Restliche Reise nach "+city.getName()+" wird ca. "+Math.round(hero.getDistanceToTravel()/6)+" Stunden dauern.");
 			System.out.println("Weiter nach "+city.getName()+" reisen?");
-			controls.setNext(false);
-			controls.setJourney(true);
-			Travel(hero,monster,city,citys);
+			world.controls.setNext(false);
+			world.controls.setJourney(true);
+			Travel(hero,monster,city,citys, world);
 			
-		}else if(controls.isHouse()==true&&action.equals("9")) {
+		}else if(world.controls.isHouse()==true&&action.equals("9")) {
 			world.setTime(3);
 			System.out.println("Du begibst dich zum "+city.house.getName());
 			if(city.house.isOwned()==false) {
 				
 				System.out.println("Scheint als waere die Tuer verschlossen...");
-				controls.setNext(false);
-				Action(hero,monster,city,citys);
+				world.controls.setNext(false);
+				Action(hero,monster,city,citys, world);
 			}else {
 				System.out.println("Yeah die Tuer geht auf!");
-				city.house.store(hero, world);
-				controls.setNext(false);
-				Action(hero,monster,city,citys);
+				city.house.store(hero, world, city);
+				world.controls.setNext(false);
+				Action(hero,monster,city,citys, world);
 			}
+		}else if(world.controls.isStats()==true&&action.equals("10")) {
+			hero.printStats();
+			world.controls.setNext(false);
+			Action(hero,monster,city,citys, world);
+			
 		}else {
 			System.out.println("Ungueltige Eingabe!");
-			controls.setNext(false);
+			world.controls.setNext(false);
 			
 		}
 		}
 	}
 	
-	public static boolean Travel(Hero hero,Monster monster,City city,City[] citys) throws IOException {
-		while (controls.isNext()==false&&(hero.getDistanceToTravel()==-1||hero.getDistanceToTravel()>0)) {
-				controls.setNext(false);
-			if(controls.isJourney()==true) {
+	public static boolean Travel(Hero hero,Monster monster,City city,City[] citys, World world) throws IOException {
+		while ((world.controls.isNext()==false)&&(hero.getDistanceToTravel()==-1||hero.getDistanceToTravel()>0)) {
+				world.controls.setNext(false);
 				System.out.println("1 - reisen");
-			}
-			if(controls.isRest()==true) {
 				System.out.println("2 - abbrechen");
-			}
 			//Enter data using BufferReader 
 	        BufferedReader reader =  
 	                   new BufferedReader(new InputStreamReader(System.in)); 
@@ -176,7 +162,7 @@ public class AdventureTime {
 	        // Printing the read line 
 	        System.out.println();   
 	        
-			if((controls.isJourney()==true||controls.isJourneyCon()==true)&&(action.equals("1")||action.equals("8"))) {
+			if((world.controls.isJourney()==true||world.controls.isJourneyCon()==true)&&(action.equals("1")||action.equals("8"))) {
 				System.out.println("Reisen begonnen");
 				if(hero.getDistanceToTravel()==-1) {
 					hero.setDistanceToTravel(city.distance(hero));
@@ -186,13 +172,13 @@ public class AdventureTime {
 					float chance = r.nextFloat();
 	
 				  if (chance <= 0.01f) {
-					  if(controls.isFoundMonster()==false) {
-						controls.setFoundMonster(true);
+					  if(world.controls.isFoundMonster()==false) {
+						world.controls.setFoundMonster(true);
 						 	System.out.println("Ein Monster stellt sich dir in den Weg!");
-						 	controls.setStartFight(world.getTime());
-						 	controls.changeControls(1);
-						 	controls.setLocationType(1);
-						 	Action(hero,monster,city,citys);
+						 	world.controls.setStartFight(world.getTime());
+						 	world.controls.changeControls(1);
+						 	world.controls.setLocationType(1);
+						 	Action(hero,monster,city,citys, world);
 							  return false;
 					  }
 					 
@@ -201,28 +187,53 @@ public class AdventureTime {
 				  hero.setDistanceToTravel(hero.getDistanceToTravel()-6);
 				  world.setTime(1);
 				}
-				System.out.println("Das Ziel befindet sich in 50m auf der rechten Seite.");
+				System.out.println("Das Ziel befindet sich in 50m auf der rechten Seite.\n");
 				
 				System.out.println(world.showTime());
 				
 				hero.setX(city.getPosX());
 				hero.setY(city.getPosY());
-				controls.changeControls(5);
-				controls.setCurrentCity(city);
-				controls.setLocationType(3);
+				world.controls.changeControls(5);
+				world.controls.setCurrentCity(city);
+				world.controls.setLocationType(3);
 				
 			}
-			else if(controls.isRest()==true&&action.equals("2")) {
+			else if(world.controls.isRest()==true&&action.equals("2")) {
 				System.out.println("abgebrochen");
-				controls.setNext(false);
-				Action(hero,monster,city,citys);
+				world.controls.setNext(false);
+				Action(hero,monster,city,citys, world);
 			}else {
 				System.out.println("Ungueltige Eingabe!");
-				controls.setNext(false);
+				world.controls.setNext(false);
 			}
 		}
 		return true;
 		
+	}
+	
+	
+	static void printIntro() throws InterruptedException{
+		String[] intro = {	"",
+							"       ______          __     ___       __                 __                      ",
+							"      /_  __/__  _  __/ /_   /   | ____/ /   _____  ____  / /___  __________       ",
+							" ______/ / / _ \\| |/_/ __/  / /| |/ __  / | / / _ \\/ __ \\/ __/ / / / ___/ _ \\______",
+							"/_____/ / /  __/>  </ /_   / ___ / /_/ /| |/ /  __/ / / / /_/ /_/ / /  /  __/_____/",
+							"     /_/  \\___/_/|_|\\__/  /_/  |_\\\\_,_/ |___/\\___/_/ /_/\\__/\\__,_/_/   \\___/       ",
+							"                                 / /_  __  __                                       ",
+							"  ______________________________/ __ \\/ / / /___________________________________    ",
+							" /_____/_____/_____/_____/_____/ /_/ / /_/ /_____/_____/_____/_____/_____/_____/    ",
+							"                      ______  /_.___/\\__, /           ___                           ",
+							"                     / ____/__  ____/____/_____  ____/ (_)___                       ",
+							"  __________________/ / __/ _ \\/ __ \\/ ___/ __ \\/ __  / / __ \\__________________    ",
+							" /_____/_____/_____/ /_/ /  __/ /_/ / /  / /_/ / /_/ / / / / /_____/_____/_____/    ",
+							"                   \\____/\\___/\\____/_/   \\____/\\__,_/_/_/ /_/                       ",
+							"",
+							"Dies ist ein Fantasy Text-RPG!"};
+	                   
+	   for(String entry : intro) {
+			Thread.sleep(180);
+		   System.out.println(entry);
+	   }                
 	}
 	
 

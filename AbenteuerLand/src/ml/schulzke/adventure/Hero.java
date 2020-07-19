@@ -5,16 +5,20 @@ import java.util.Random;
 public class Hero {
 	
 	private String name = "name";
-	private int age = 0;
+	private int age = 26;
 	private int level = 1;
+	private int xp = 0;
 	private Float health = 100f;
 	private Float distanceToTravel = -1f;
 	private boolean ownFlat = false;
 	
-	private int strength = 10;
-	private Inventory inv = new Inventory(); // Gold > Weapons > Clothing > Potions
+	private int strengthBase = 10;
+	private int strength;
+	Inventory inv = new Inventory(); // Gold > Weapons > Clothing > Potions
 	private double x = 285;
 	private double y = 182;
+	private int packMax = 30000;
+	private int pack;
 	
 	public boolean isOwnFlat(){
 	    return ownFlat;
@@ -26,8 +30,10 @@ public class Hero {
 	
 	public String getInv(){
 		String out = "";
+
 		
 		out = "Du besitzt:\n"+this.inv.getGold()+" Gold\n"+this.inv.getPotion()+" Heiltraenke\n";
+		out += "Inventarplaetze: "+this.inv.getInventoryLength()+"/50\n";
 		if(this.getKeyHouse()==true) {
 			out += "Schluessel zu Haus";
 		}
@@ -99,7 +105,7 @@ public class Hero {
 	}
 	
 	public int getStrength(){
-		return this.strength;
+		return this.strengthBase*(1+(level/5));
 	}
 	
 	public void setStrength(int strength){
@@ -130,7 +136,18 @@ public class Hero {
 		this.inv.setKeyHouse(keyHouse);
 	}
 	
-public void fight(Monster monster,Controls controls, World world) {
+	public void printStats() {
+		System.out.println("Deine Stats: ");
+		System.out.println("Level:		"+this.getLevel());
+		System.out.println("Grundstaerke:	"+this.getStrengthBase());
+		System.out.println("Schaden:	"+((int) (this.getStrength()*0.7f))+"-"+((int) (this.getStrength()*1.3f)));
+		System.out.println("Tragkraft:	"+(this.getPackMax()/1000)+"kg");
+		System.out.println("Platz:		"+(this.getPack()/1000)+"kg");
+		System.out.println("Alter:		"+this.getAge());
+		System.out.println("Erfahrung:	"+this.getXp()+"\n");
+	}
+	
+public void fight(Monster monster,World world) {
 
 		
 		Random rnd_dmg = new Random();
@@ -174,7 +191,7 @@ public void fight(Monster monster,Controls controls, World world) {
 			System.out.println("Du hast den "+monster.getName()+" besiegt!");
 			System.out.println("Du erhaelst "+monster.getGold()+" Gold von dem besiegten "+monster.getName()+".");
 			
-			int duration = world.getTime()-controls.getStartFight();
+			int duration = world.getTime()-world.controls.getStartFight();
 			if(duration>=60) {
 				int minutes = (int) Math.floor(duration/60);
 				if(minutes==1) {
@@ -190,12 +207,53 @@ public void fight(Monster monster,Controls controls, World world) {
 			
 			
 			
-			controls.changeControls(4);
-			controls.setLocationType(2);
+			world.controls.changeControls(4);
+			world.controls.setLocationType(2);
 			this.setGold(this.getGold()+monster.getGold());
 		}
 		
 	}
+
+public int getStrengthBase() {
+	return strengthBase;
+}
+
+public void setStrengthBase(int strengthBase) {
+	this.strengthBase = strengthBase;
+}
+
+public int getLevel() {
+	return level;
+}
+
+public void setLevel(int level) {
+	this.level = level;
+}
+
+public int getXp() {
+	return xp;
+}
+
+public void setXp(int xp) {
+	this.xp = xp;
+}
+
+public int getPackMax() {
+	return packMax;
+}
+
+public void setPackMax(int packMax) {
+	this.packMax = packMax;
+}
+
+public int getPack() {
+	//System.out.println(this.getPackMax()+"-"+(this.getGold()*8)+"-"+(this.getPotion()*40)+"-"+this.inv.getInventoryWeight());
+	return this.getPackMax()-(this.getGold()*8)-(this.getPotion()*40)-this.inv.getInventoryWeight();
+}
+
+public void setPack(int pack) {
+	this.pack = pack;
+}
 	
 	
 }

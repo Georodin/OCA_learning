@@ -34,13 +34,14 @@ public class City {
 		this.house.setOwned(ownedHouse);
 	}
 
-	public City(String name,int x,int y){
+	public City(String name,int x,int y, String hName){
 		   this.name = name;
 		   this.posX = x;
 		   this.posY = y;
+		   this.house.setName(hName);
 		   
 	}
-	
+
 	public String getName(){
 		return this.name;
 	}
@@ -70,9 +71,9 @@ public class City {
 		return (float) Math.sqrt(((this.posX-hero.getX())*(this.posX-hero.getX()))+((this.posY-hero.getY())*(this.posY-hero.getY())));
 	}
 	
-	public void getDistances(Hero hero, City[] citys, City city, Controls controls) {
+	public void getDistances(Hero hero, City[] citys, City city, World world) {
 		for(int i = 0; i<citys.length;i++) {
-			if(controls.getCurrentCity()!=citys[i]) {
+			if(world.controls.getCurrentCity()!=citys[i]) {
 			System.out.println(citys[i].getName()+" ist "+Math.round(citys[i].distance(hero))+"km entfernt.");
 			System.out.println("Reise nach "+citys[i].getName()+" wird ca. "+Math.round(citys[i].distance(hero)/6)+" Stunden dauern.");
 			System.out.println("Nach "+citys[i].getName()+" reisen?\n");
@@ -80,12 +81,13 @@ public class City {
 		}
 	}
 	
-	public City selectCity(Hero hero, City[] citys,City city, Controls controls) throws IOException {
+	public City selectCity(Hero hero,Monster monster, City[] citys, City city, World world) throws IOException {
+		world.controls.setTravelAbbort(false);
 		City[] citySelect = new City[citys.length];
         int i = 0;
         int iSelect = 0;
         while(i<citys.length) {
-        	if(controls.getCurrentCity()!=citys[i]) {
+        	if(world.controls.getCurrentCity()!=citys[i]) {
         		citySelect[iSelect] = citys[i];
             	System.out.println((iSelect+1)+" - Nach "+citySelect[iSelect].getName()+" reisen?	("+Math.round(citys[i].distance(hero))+"km)");
             	iSelect++;
@@ -111,16 +113,17 @@ public class City {
         // Reading data using readLine 
         String action = reader.readLine(); 
         
-        for(int i1=0;i1<citySelect.length;i1++) {
+        for(int i1=0;i1<citySelect.length-1;i1++) {
         	if(action.equals(Integer.toString((i1+1)))) {
     			System.out.println((i1+1)+" - Nach "+citySelect[i1].getName()+" reisen\n");
     			returnCity = citySelect[i1];
     			valid = true;
     		}
         }
-        if(action.equals(Integer.toString((citySelect.length+1)))) {
+        if((action.equals(Integer.toString((citySelect.length+1))))&&(world.controls.getCurrentCity()==null)||(action.equals(Integer.toString((citySelect.length))))&&(world.controls.getCurrentCity()!=null)) {
         	valid = true;
         	returnCity = city;
+        	world.controls.setTravelAbbort(true);
         	System.out.println("Abgebrochen!\n");
         }
         
@@ -131,6 +134,7 @@ public class City {
 	}
         return returnCity;
 	}
+
 	
 	
 

@@ -8,7 +8,7 @@ public class House {
 	
 	
 	
-	private String name = "Menouthis Weg 4";
+	private String name;
 	
 	private Inventory inv = new Inventory();
 	
@@ -49,9 +49,9 @@ public class House {
 		this.inv.setPotion(potion);
 	}
 	
-	public void store(Hero hero, World world) throws IOException {
+	public void store(Hero hero, World world, City city) throws IOException {
 		next = false;
-		System.out.println("Du bist in deinem Zimmer im "+this.getName());
+		System.out.println("Du bist in deinem Zimmer in "+city.getName());
 		while(next==false) {
 			System.out.println("Was möchtest du machen?\n");
 	

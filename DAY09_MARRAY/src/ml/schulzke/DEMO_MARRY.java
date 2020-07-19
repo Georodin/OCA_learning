@@ -1,8 +1,32 @@
 package ml.schulzke;
 
+import java.util.Random;
+
 public class DEMO_MARRY {
 	
 	public static void main(String[] args) {
+		
+		
+		Random rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
+		rnd_dmg = new Random();
+		System.out.println((float) rnd_dmg.nextInt(4)/10);
 		
 		City[] city = new City[3];
 		Hero hero = new Hero();

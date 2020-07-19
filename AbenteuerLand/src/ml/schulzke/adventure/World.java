@@ -1,6 +1,8 @@
 package ml.schulzke.adventure;
 
 public class World {
+	
+	Controls controls = new Controls();
 	private int time = 0;
 	private int day = 5;
 	
