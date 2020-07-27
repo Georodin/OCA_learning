@@ -52,7 +52,7 @@ public class Vehicle {
 		if(sekunden.length()==1) {
 			sekunden = "0"+sekunden;
 		}
-		return "Rundendauer: "+stunden+":"+minuten+":"+sekunden;
+		return "Rundendauer: "+stunden+":"+minuten+":"+sekunden+" "+this.getName();
 		
 	}
 	
@@ -212,9 +212,9 @@ class Enterprise extends Vehicle {
 		super(name, pos, speed, 220, 4);
 	}
 	
-	public String rndTime(double length) {
+	public String rndTime(double length) { 
 		double seconds = (length/this.getSpeed())*3600;
-		return "Rundendauer: "+String.format("%.6f", seconds)+" Sekunden";
+		return "Rundendauer: "+String.format("%.6f", seconds)+" Sekunden "+this.getName();
 		
 	}
 
