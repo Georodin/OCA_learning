@@ -1,4 +1,4 @@
-1package ml.schulzke.adventure;
+package ml.schulzke.adventure;
 
 import java.io.BufferedReader;
 import java.io.IOException;
